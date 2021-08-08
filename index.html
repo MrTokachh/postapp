@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8"
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Post</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+	<div id="wrapper">
+
+<main>
+	<div class="container">
+		<form class="post-form" id="form">
+			<div>
+				<label for="title">Title</label>
+				<input type="text" class="input" id="title">
+			</div>
+			<div>
+				<label for="description">Description</label>
+				<textarea rows="4" class="input" id="description"></textarea>
+			</div>
+			<div>
+				<button class="btn btn-dark btn-submit hidden">Add post</button>
+				<button class="btn btn-dark btn-edit hidden">Save post</button>
+			</div>
+		</form>
+		<div class="post-list">
+			<ul class="post-list__body">
+			</ul>
+			<div class="post-list__footer">
+				<div>
+					<strong class="post-count">2</strong> post
+				</div>
+				<div>
+					<button class="btn btn-dark">Update</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+	</div>
+	
+	<script src="my.js"></script>
+</body>
+</html>
