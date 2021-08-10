@@ -557,6 +557,12 @@ textarea {
   padding: 10px;
 }
 
+.post-item__updated, .post-item__created {
+  display: block;
+  font-weight: 700;
+  margin: 2px 0;
+}
+
 .post-item__right {
   width: 100px;
   padding: 10px;

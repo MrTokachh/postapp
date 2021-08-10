@@ -1,16 +1,21 @@
 var postList = document.querySelector('.post-list__body');
 var url = 'http://localhost:5005/posts';
 
-var date = new Date;
-var day = date.getDate();
-var month = date.getMonth() + 1;
-var year = date.getFullYear();
-var hour = date.getHours();
-var minutes = date.getMinutes();
-var curentDate = day + '.' + month + '.' + year + ' ' + hour + ':' + minutes
+function date() {
+  var date = new Date;
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+  var hour = date.getHours();
+  var minutes = date.getMinutes();
+  var sec = date.getSeconds();
+  var curentDate = day + '.' + month + '.' + year + ' ' + hour + ':' + minutes + ':' + sec
 
+  return curentDate
+}
 
 function renderPosts(posts) {
+  postList.innerHTML = '';
   posts.forEach(function(post) {
     var postItem = document.createElement('li');
     postItem.classList.add('post-item');
@@ -32,12 +37,12 @@ function renderPosts(posts) {
 
     var postCreated = document.createElement('time');
     postCreated.classList.add('post-item__created');
-    postCreated.textContent = post.dateCreated
+    postCreated.textContent = 'created:' + post.dateCreated
     postLeft.append(postCreated);
 
     var postUpdated = document.createElement('time');
     postUpdated.classList.add('post-item__updated');
-    postUpdated.textContent = post.dateUpdated
+    postUpdated.textContent = 'updated:' + post.dateUpdated
     postLeft.append(postUpdated);
 
     var postRight = document.createElement('div');
@@ -56,23 +61,25 @@ function renderPosts(posts) {
     postRemove.classList.add('btn');
     postRemove.classList.add('btn-red');
     postRemove.textContent = 'Remove';
-    postRemove.addEventListener('click', removeFunc)
+    postRemove.addEventListener('click', removeFunc);
     postRight.append(postRemove);
 
     postList.append(postItem);
   })
 }
 
-fetch(url)
-  .then(function(res) {
-    return res.json()
-  })
-  .then(function(data) {
+function render() {
+  fetch(url)
+    .then(function(res) {
+      return res.json()
+    })
+    .then(function(data) {
+  
+      renderPosts(data)
+    })
+}
 
-    renderPosts(data)
-  })
-
-
+render()
 
 function validLength(item, min, max, func) {
   var length = item.value.length;
@@ -145,21 +152,12 @@ btnSubmit.addEventListener('click', function(e) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id: '',
         title: title.value,
         description: description.value,
         dateUpdated: '',
-        dateCreated: ''
+        dateCreated: date()
       })
-    })
-      .then(function(res) {
-        return res.json()
-      })
-      .then(function(data) {
-        var dataArr = []
-        dataArr.push(data)
-        renderPosts(dataArr)
-      })
+    }).then(render)
 
     title.value = '';
     description.value = '';
@@ -183,12 +181,7 @@ function removeFunc() {
   fetch(url + '/' + id, {
     method: 'DELETE'
   })
-    .then(function(res) {
-      return res.json()
-    })
-    .then(function() {
-      return location.reload()
-    })
+    .then(render)
 }
 
 var idEditPost
@@ -202,12 +195,9 @@ function editFunc() {
 
   title.value = titleValue;
   description.value = descValue;
-
   btnEdit.classList.remove('hidden');
   form.classList.add('edited');
 }
-
-
 
 btnEdit.addEventListener('click', function (e) {
   e.preventDefault()
@@ -218,19 +208,15 @@ btnEdit.addEventListener('click', function (e) {
         'Content-Type': 'application/json'
       },
     body: JSON.stringify({
-      id: '',
       title: title.value,
       description: description.value,
-      dateUpdated: '',
-      dateCreated: ''
+      dateUpdated: date(),
     })
   })
-    .then(function(res) {
-      return res.json()
-    })
-    .then(function() {
-      return location.reload()
-    })
+    .then(render)
 
+  title.value = '';
+  description.value = '';
   form.classList.remove('edited');
+  btnEdit.classList.add('hidden');
 })
