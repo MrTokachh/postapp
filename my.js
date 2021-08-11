@@ -1,17 +1,23 @@
+// TODO: Use verbs for function name
+
 var postList = document.querySelector('.post-list__body');
 var url = 'http://localhost:5005/posts';
 
+// TODO: You should always call () for constructors
+// TODO: Most of data usage shouldn't be hardcoded but computed on demand instead
 var date = new Date;
 var day = date.getDate();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
 var hour = date.getHours();
 var minutes = date.getMinutes();
+// TODO: Remove unused variable
 var curentDate = day + '.' + month + '.' + year + ' ' + hour + ':' + minutes
 
 
 function renderPosts(posts) {
   posts.forEach(function(post) {
+    // TODO: For performance reasons, check and apply DocumentFragment instead https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
     var postItem = document.createElement('li');
     postItem.classList.add('post-item');
     postItem.id = post.id
@@ -63,6 +69,7 @@ function renderPosts(posts) {
   })
 }
 
+// TODO: Move into function and call this functionality directly
 fetch(url)
   .then(function(res) {
     return res.json()
@@ -73,7 +80,7 @@ fetch(url)
   })
 
 
-
+// TODO: validLength doesn't looks like an action, but function should make something. Please, use verb instead
 function validLength(item, min, max, func) {
   var length = item.value.length;
   if (length < min) {
@@ -86,9 +93,11 @@ function validLength(item, min, max, func) {
   }
 }
 
+// TODO: Move "Add Post" and "Edit Post" functionality into separate files 
 var form = document.getElementById("form");
 var title = document.getElementById("title");
 var description = document.getElementById("description");
+
 
 function minValid(item, min) {
   var length = item.value.length;
@@ -112,6 +121,8 @@ function maxValid(item, max) {
   }
 }
 
+// TODO: Move 60, 3, 240 and 24 into constants
+// TODO: Move handlers into separate functions
 title.addEventListener('keyup', function() {
   maxValid(this, 60);
 })
@@ -131,6 +142,8 @@ description.addEventListener('blur', function() {
   
 })
 
+
+// TODO: Move all globals to the top or for specific module/script scope
 var dataArr = [];
 var btnSubmit = document.querySelector('.btn-submit');
 var btnEdit = document.querySelector('.btn-edit');
@@ -138,6 +151,8 @@ var btnEdit = document.querySelector('.btn-edit');
 btnSubmit.addEventListener('click', function(e) {
   e.preventDefault()
   
+  // TODO: Simplify if condition, move each check into variable
+  // Move title.classList.contains('is-valid') and description.classList.contains('is-valid') checks into separate functions and reuse
   if (title.classList.contains('is-valid') && description.classList.contains('is-valid')) {
     fetch(url, {
       method: 'POST',
@@ -184,15 +199,18 @@ function removeFunc() {
     method: 'DELETE'
   })
     .then(function(res) {
+      // TODO: Check if we really need call json here
       return res.json()
     })
     .then(function() {
+      // TODO: Fix page reload
       return location.reload()
     })
 }
-
+// TODO: Move to global variables level
 var idEditPost
 
+// TODO: Remove Func postfix. We could use different conventions for handlers. For instance. handle***. Ex. handleEdit, handleAdd and handleRemove
 function editFunc() {
   var parent = this.parentElement.parentElement;
   idEditPost = parent.id;
@@ -208,7 +226,8 @@ function editFunc() {
 }
 
 
-
+// TODO: Move into feature function
+// TODO: Move handler into separate function for consistency
 btnEdit.addEventListener('click', function (e) {
   e.preventDefault()
   
@@ -226,9 +245,11 @@ btnEdit.addEventListener('click', function (e) {
     })
   })
     .then(function(res) {
+      // TODO: Move into general request function and reuse anywhere where we need to parse response json 
       return res.json()
     })
     .then(function() {
+      // TODO: Fix page reload
       return location.reload()
     })
 
