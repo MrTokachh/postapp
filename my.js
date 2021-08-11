@@ -2,20 +2,22 @@
 
 var postList = document.querySelector('.post-list__body');
 var url = 'http://localhost:5005/posts';
+function date() {
+  // TODO: You should always call () for constructors
+  var date = new Date;
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+  var hour = date.getHours();
+  var minutes = date.getMinutes();
+  var sec = date.getSeconds();
+  var curentDate = day + '.' + month + '.' + year + ' ' + hour + ':' + minutes + ':' + sec
 
-// TODO: You should always call () for constructors
-// TODO: Most of data usage shouldn't be hardcoded but computed on demand instead
-var date = new Date;
-var day = date.getDate();
-var month = date.getMonth() + 1;
-var year = date.getFullYear();
-var hour = date.getHours();
-var minutes = date.getMinutes();
-// TODO: Remove unused variable
-var curentDate = day + '.' + month + '.' + year + ' ' + hour + ':' + minutes
-
+  return curentDate
+}
 
 function renderPosts(posts) {
+  postList.innerHTML = '';
   posts.forEach(function(post) {
     // TODO: For performance reasons, check and apply DocumentFragment instead https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
     var postItem = document.createElement('li');
@@ -38,12 +40,12 @@ function renderPosts(posts) {
 
     var postCreated = document.createElement('time');
     postCreated.classList.add('post-item__created');
-    postCreated.textContent = post.dateCreated
+    postCreated.textContent = 'created:' + post.dateCreated
     postLeft.append(postCreated);
 
     var postUpdated = document.createElement('time');
     postUpdated.classList.add('post-item__updated');
-    postUpdated.textContent = post.dateUpdated
+    postUpdated.textContent = 'updated:' + post.dateUpdated
     postLeft.append(postUpdated);
 
     var postRight = document.createElement('div');
@@ -62,23 +64,26 @@ function renderPosts(posts) {
     postRemove.classList.add('btn');
     postRemove.classList.add('btn-red');
     postRemove.textContent = 'Remove';
-    postRemove.addEventListener('click', removeFunc)
+    postRemove.addEventListener('click', removeFunc);
     postRight.append(postRemove);
 
     postList.append(postItem);
   })
 }
 
-// TODO: Move into function and call this functionality directly
-fetch(url)
-  .then(function(res) {
-    return res.json()
-  })
-  .then(function(data) {
+// TODO: Rename according to actual functionality
+function render() {
+  fetch(url)
+    .then(function(res) {
+      return res.json()
+    })
+    .then(function(data) {
+  
+      renderPosts(data)
+    })
+}
 
-    renderPosts(data)
-  })
-
+render()
 
 // TODO: validLength doesn't looks like an action, but function should make something. Please, use verb instead
 function validLength(item, min, max, func) {
@@ -160,21 +165,12 @@ btnSubmit.addEventListener('click', function(e) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id: '',
         title: title.value,
         description: description.value,
         dateUpdated: '',
-        dateCreated: ''
+        dateCreated: date()
       })
-    })
-      .then(function(res) {
-        return res.json()
-      })
-      .then(function(data) {
-        var dataArr = []
-        dataArr.push(data)
-        renderPosts(dataArr)
-      })
+    }).then(render)
 
     title.value = '';
     description.value = '';
@@ -198,14 +194,7 @@ function removeFunc() {
   fetch(url + '/' + id, {
     method: 'DELETE'
   })
-    .then(function(res) {
-      // TODO: Check if we really need call json here
-      return res.json()
-    })
-    .then(function() {
-      // TODO: Fix page reload
-      return location.reload()
-    })
+    .then(render)
 }
 // TODO: Move to global variables level
 var idEditPost
@@ -220,7 +209,6 @@ function editFunc() {
 
   title.value = titleValue;
   description.value = descValue;
-
   btnEdit.classList.remove('hidden');
   form.classList.add('edited');
 }
@@ -237,21 +225,15 @@ btnEdit.addEventListener('click', function (e) {
         'Content-Type': 'application/json'
       },
     body: JSON.stringify({
-      id: '',
       title: title.value,
       description: description.value,
-      dateUpdated: '',
-      dateCreated: ''
+      dateUpdated: date(),
     })
   })
-    .then(function(res) {
-      // TODO: Move into general request function and reuse anywhere where we need to parse response json 
-      return res.json()
-    })
-    .then(function() {
-      // TODO: Fix page reload
-      return location.reload()
-    })
+    .then(render)
 
+  title.value = '';
+  description.value = '';
   form.classList.remove('edited');
+  btnEdit.classList.add('hidden');
 })

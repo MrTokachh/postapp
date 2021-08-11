@@ -14,38 +14,37 @@
 
 <body>
 	<div id="wrapper">
-
-<main>
-	<div class="container">
-		<!-- TODO: Move post form to js side and render conditionally -->
-		<form class="post-form" id="form">
-			<div>
-				<label for="title">Title</label>
-				<input type="text" class="input" id="title">
-			</div>
-			<div>
-				<label for="description">Description</label>
-				<textarea rows="4" class="input" id="description"></textarea>
-			</div>
-			<div>
-				<button class="btn btn-dark btn-submit hidden">Add post</button>
-				<button class="btn btn-dark btn-edit hidden">Save post</button>
-			</div>
-		</form>
-		<div class="post-list">
-			<ul class="post-list__body">
-			</ul>
-			<div class="post-list__footer">
-				<div>
-					<strong class="post-count">2</strong> post
+		<main>
+			<div class="container">
+				<!-- TODO: Move post form to js side and render conditionally -->
+				<form class="post-form" id="form">
+					<div>
+						<label for="title">Title</label>
+						<input type="text" class="input" id="title">
+					</div>
+					<div>
+						<label for="description">Description</label>
+						<textarea rows="4" class="input" id="description"></textarea>
+					</div>
+					<div>
+						<button class="btn btn-dark btn-submit hidden">Add post</button>
+						<button class="btn btn-dark btn-edit hidden">Save post</button>
+					</div>
+				</form>
+				<div class="post-list">
+					<ul class="post-list__body">
+					</ul>
+					<div class="post-list__footer">
+						<div>
+							<strong class="post-count">2</strong> post
+						</div>
+						<div>
+							<button class="btn btn-dark" id="test">Refresh</button>
+						</div>
+					</div>
 				</div>
-				<div>
-					<button class="btn btn-dark">Update</button>
-				</div>
 			</div>
-		</div>
-	</div>
-</main>
+		</main>
 	</div>
 	
 	<script src="my.js"></script>
